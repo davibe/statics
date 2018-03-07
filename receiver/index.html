@@ -22,7 +22,11 @@ player.setMessageInterceptor(
     status => {
         console.log("The old status", JSON.stringify(status, null, 2))
         // NOTE: getLiveSeekableRange() only works for live
-        status.extendedStatus.media.duration = player.getLiveSeekableRange().end
+        let range = player.getLiveSeekableRange()
+        if (range) {
+            console.log("We have a range!")
+            status.extendedStatus.media.duration = range.end
+        }
         console.log("The NEW status", JSON.stringify(status, null, 2))
         return status;
     }
