@@ -1,0 +1,41 @@
+<html>
+<head>
+</head>
+<body>
+  <cast-media-player id="player"></cast-media-player>
+  <style>
+    #player {
+        --theme-hue: 210;
+        --progress-color: rgb(0, 100, 255);
+        --splash-image: url("background.svg");
+    }
+  </style>
+  <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
+  </script>
+  <script>
+
+const context = cast.framework.CastReceiverContext.getInstance()
+const player = context.getPlayerManager()
+
+player.setMessageInterceptor(
+    cast.framework.messages.MessageType.MEDIA_STATUS,
+    status => {
+        console.log("The old status", JSON.stringify(status, null, 2))
+        // NOTE: getLiveSeekableRange() only works for live
+        status.extendedStatus.media.duration = player.getLiveSeekableRange().end
+        console.log("The NEW status", JSON.stringify(status, null, 2))
+        return status;
+    }
+)
+
+const playbackConfig = new cast.framework.PlaybackConfig();
+playbackConfig.autoResumeDuration = 3
+playbackConfig.autoResumeNumberOfSegments = 1
+
+context.start({
+    playbackConfig: playbackConfig
+})
+
+  </script>
+</body>
+</html>
