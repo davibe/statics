@@ -25,7 +25,12 @@ player.setMessageInterceptor(
         let range = player.getLiveSeekableRange()
         if (range) {
             console.log("We have a range!")
-            status.extendedStatus.media.duration = range.end
+            if (status.media) {
+                status.media.duration = range.end
+            }
+            if (status.extendedStatus) {
+                status.extendedStatus.media.duration = range.end
+            }
         }
         console.log("The NEW status", JSON.stringify(status, null, 2))
         return status;
