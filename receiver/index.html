@@ -26,7 +26,7 @@ player.setMessageInterceptor(
             console.log("We have a range!")
             if (status.media) {
                 // twice the duration, just for tests
-                status.media.duration = (range.end - range.start) * 2
+                status.media.duration = range.end - range.start
             }
         }
         console.log("The NEW status", JSON.stringify(status, null, 2))
@@ -34,12 +34,14 @@ player.setMessageInterceptor(
     }
 )
 
+/*
 player.addEventListener(
     cast.framework.events.category.CORE,
     event => {
         console.debug(event);
     }
 )
+*/
 
 const playbackConfig = new cast.framework.PlaybackConfig();
 playbackConfig.autoResumeDuration = 5
