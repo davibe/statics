@@ -21,12 +21,12 @@ player.setMessageInterceptor(
     cast.framework.messages.MessageType.MEDIA_STATUS,
     status => {
         console.log("The old status", JSON.stringify(status, null, 2))
-        // NOTE: getLiveSeekableRange() only works for live
         let range = player.getLiveSeekableRange()
         if (range) {
             console.log("We have a range!")
             if (status.media) {
-                status.media.duration = range.end - range.start
+                // twice the duration, just for tests
+                status.media.duration = (range.end - range.start) * 2
             }
         }
         console.log("The NEW status", JSON.stringify(status, null, 2))
@@ -35,8 +35,8 @@ player.setMessageInterceptor(
 )
 
 const playbackConfig = new cast.framework.PlaybackConfig();
-//playbackConfig.autoResumeDuration = 3
-//playbackConfig.autoResumeNumberOfSegments = 1
+playbackConfig.autoResumeDuration = 5
+playbackConfig.autoResumeNumberOfSegments = 1
 
 context.start({
     playbackConfig: playbackConfig
