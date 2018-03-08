@@ -22,12 +22,18 @@ player.setMessageInterceptor(
     status => {
         console.log("The old status", JSON.stringify(status, null, 2))
         let range = player.getLiveSeekableRange()
-        if (range) {
-            console.log("We have a range!")
-            if (status.media) {
-                // twice the duration, just for tests
-                status.media.duration = range.end - range.start
+        if (status.media.duration == -1) {
+            status.media.duration = 60 * 60
+        }
+        if (player.getLiveSeekableRange) {
+            if (range) {
+                console.log("We have a range!")
+                if (status.media) {
+                    // twice the duration, just for tests
+                    status.media.duration = range.end - range.start
+                }
             }
+        } else {
         }
         console.log("The NEW status", JSON.stringify(status, null, 2))
         return status;
