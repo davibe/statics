@@ -34,6 +34,13 @@ player.setMessageInterceptor(
     }
 )
 
+player.addEventListener(
+    cast.framework.events.category.CORE,
+    event => {
+        console.debug(event);
+    }
+)
+
 const playbackConfig = new cast.framework.PlaybackConfig();
 playbackConfig.autoResumeDuration = 5
 playbackConfig.autoResumeNumberOfSegments = 1
