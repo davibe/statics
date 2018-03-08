@@ -21,11 +21,11 @@ player.setMessageInterceptor(
     cast.framework.messages.MessageType.MEDIA_STATUS,
     status => {
         console.log("The old status", JSON.stringify(status, null, 2))
-        let range = player.getLiveSeekableRange()
         if (status.media.duration == -1) {
             status.media.duration = 60 * 60
         }
         if (player.getLiveSeekableRange) {
+            let range = player.getLiveSeekableRange()
             if (range) {
                 console.log("We have a range!")
                 if (status.media) {
