@@ -10,7 +10,7 @@
         --splash-image: url("background.svg");
     }
   </style>
-  <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
+  <script type="text/javascript" src="cast_receiver_framework.js">
   </script>
   <script>
 
@@ -20,36 +20,32 @@ const player = context.getPlayerManager()
 player.setMessageInterceptor(
     cast.framework.messages.MessageType.MEDIA_STATUS,
     status => {
-        console.log("The old status", JSON.stringify(status, null, 2))
         if (status.media && (status.media.duration == -1)) {
             status.media.duration = 60 * 60
         }
-        if (player.getLiveSeekableRange) {
-            let range = player.getLiveSeekableRange()
-            if (range) {
-                console.log("We have a range!")
-                if (status.media) {
-                    // twice the duration, just for tests
-                    status.media.duration = range.end - range.start
-                }
+        let range = player.getLiveSeekableRange()
+        if (range) {
+            if (status.media) {
+                console.log()
+                const duration = range.end - range.start
+                console.log("Adjusting duration for live stream", duration)
+                status.media.duration = duration
             }
-        } else {
         }
-        console.log("The NEW status", JSON.stringify(status, null, 2))
+        console.log("Status", JSON.stringify(status, null, 2))
         return status;
     }
 )
 
-/*
 player.addEventListener(
     cast.framework.events.category.CORE,
     event => {
         console.debug(event);
     }
 )
-*/
 
 const playbackConfig = new cast.framework.PlaybackConfig();
+// faster playback start
 playbackConfig.autoResumeDuration = 5
 playbackConfig.autoResumeNumberOfSegments = 1
 
